@@ -1,0 +1,37 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_edit1"
+
+        android:icon="@mipmap/logo_eavesdrop"
+
+        android:title="Edit"
+
+        app:showAsAction="always"></item>
+
+    <item android:id="@+id/action_edit2"
+
+        android:icon="@mipmap/map_icon"
+
+        android:title="Edit"
+
+        app:showAsAction="always"></item>
+
+    <item android:id="@+id/action_edit3"
+
+        android:icon="@mipmap/casque_icon"
+
+        android:title="Edit"
+
+        app:showAsAction="always"></item>
+
+    <item android:id="@+id/action_edit4"
+
+        android:icon="@mipmap/parameters_icon"
+
+        android:title="Edit"
+
+        app:showAsAction="always"></item>
+
+
+</menu>
