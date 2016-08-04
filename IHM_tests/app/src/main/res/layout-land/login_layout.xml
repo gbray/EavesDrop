@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:background="@mipmap/logo_eavesdrop"
+
+
+        android:layout_weight="1" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:drawableLeft="@mipmap/google_connexion_white"
+        android:text="Google"
+        android:textColor="#FFFFFF"
+        android:background="@color/colorGoogle"
+        android:textStyle="bold"
+        android:textAlignment="textStart"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:drawableLeft="@mipmap/facebook_connexion_white"
+        android:text="Facebook"
+        android:textColor="#FFFFFF"
+        android:background="@color/colorFacebook"
+        android:textStyle="bold"
+        android:textAlignment="textStart"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/contel"
+        android:textColor="#800080"
+        android:background="#FFFFFF"
+        android:id="@+id/button3"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/conmail"
+        android:textColor="#000000"
+        android:background="#FFFFFF"
+        android:id="@+id/button4"/>
+
+    </LinearLayout>
+</LinearLayout>
