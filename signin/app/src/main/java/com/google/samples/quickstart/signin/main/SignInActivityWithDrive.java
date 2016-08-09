@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.signin;
+package com.google.samples.quickstart.signin.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
+import com.google.samples.quickstart.signin.R;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
