@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name="com.google.samples.quickstart.signin.ChooserActivity"
+            android:name=".main.ChooserActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,23 +19,23 @@
         </activity>
 
         <activity
-            android:name="com.google.samples.quickstart.signin.SignInActivity"
+            android:name=".main.SignInActivity"
             android:label="@string/name_sign_in_activity"
             android:theme="@style/ThemeOverlay.MyNoTitleActivity">
         </activity>
         <activity
-            android:name="com.google.samples.quickstart.signin.SignInActivityWithDrive"
+            android:name=".main.SignInActivityWithDrive"
             android:label="@string/name_sign_in_activity"
             android:theme="@style/ThemeOverlay.MyNoTitleActivity">
         </activity>
         <activity
-            android:name="com.google.samples.quickstart.signin.IdTokenActivity"
+            android:name=".main.IdTokenActivity"
             android:label="@string/name_id_token_activity"
             android:theme="@style/ThemeOverlay.MyNoTitleActivity">
         </activity>
 
         <activity
-            android:name="com.google.samples.quickstart.signin.ServerAuthCodeActivity"
+            android:name=".main.ServerAuthCodeActivity"
             android:label="@string/name_auth_code_activity"
             android:theme="@style/ThemeOverlay.MyNoTitleActivity">
         </activity>

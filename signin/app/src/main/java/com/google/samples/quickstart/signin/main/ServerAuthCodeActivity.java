@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.signin;
+package com.google.samples.quickstart.signin.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,22 +13,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
+import com.google.samples.quickstart.signin.R;
 
 /**
- * Demonstrates retrieving an ID token for the current Google user.
+ * Demonstrates retrieving an offline access one-time code for the current Google user, which
+ * can be exchanged by your server for an access token and refresh token.
  */
-public class IdTokenActivity extends AppCompatActivity implements
+public class ServerAuthCodeActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
-    private static final String TAG = "IdTokenActivity";
-    private static final int RC_GET_TOKEN = 9002;
+    public static final String TAG = "ServerAuthCodeActivity";
+    private static final int RC_GET_AUTH_CODE = 9003;
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView mIdTokenTextView;
+    private TextView mAuthCodeTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class IdTokenActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         // Views
-        mIdTokenTextView = (TextView) findViewById(R.id.detail);
+        mAuthCodeTextView = (TextView) findViewById(R.id.detail);
 
         // Button click listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -47,12 +51,17 @@ public class IdTokenActivity extends AppCompatActivity implements
         validateServerClientID();
 
         // [START configure_signin]
-        // Request only the user's ID token, which can be used to identify the
-        // user securely to your backend. This will contain the user's basic
-        // profile (name, profile picture URL, etc) so you should not need to
-        // make an additional call to personalize your application.
+        // Configure sign-in to request offline access to the user's ID, basic
+        // profile, and Google Drive. The first time you request a code you will
+        // be able to exchange it for an access token and refresh token, which
+        // you should store. In subsequent calls, the code will only result in
+        // an access token. By asking for profile access (through
+        // DEFAULT_SIGN_IN) you will also get an ID Token as a result of the
+        // code exchange.
+        String serverClientId = getString(R.string.server_client_id);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
+                .requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
+                .requestServerAuthCode(serverClientId)
                 .requestEmail()
                 .build();
         // [END configure_signin]
@@ -64,12 +73,13 @@ public class IdTokenActivity extends AppCompatActivity implements
                 .build();
     }
 
-    private void getIdToken() {
-        // Show an account picker to let the user choose a Google account from the device.
-        // If the GoogleSignInOptions only asks for IDToken and/or profile and/or email then no
-        // consent screen will be shown here.
+    private void getAuthCode() {
+        // Start the retrieval process for a server auth code.  If requested, ask for a refresh
+        // token.  Otherwise, only get an access token if a refresh token has been previously
+        // retrieved.  Getting a new access token for an existing grant does not require
+        // user consent.
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_GET_TOKEN);
+        startActivityForResult(signInIntent, RC_GET_AUTH_CODE);
     }
 
     private void signOut() {
@@ -94,30 +104,30 @@ public class IdTokenActivity extends AppCompatActivity implements
                 });
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_GET_TOKEN) {
-            // [START get_id_token]
+        if (requestCode == RC_GET_AUTH_CODE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess());
+            Log.d(TAG, "onActivityResult:GET_AUTH_CODE:success:" + result.getStatus().isSuccess());
 
             if (result.isSuccess()) {
+                // [START get_auth_code]
                 GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
+                String authCode = acct.getServerAuthCode();
 
                 // Show signed-in UI.
-                Log.d(TAG, "idToken:" + idToken);
-                mIdTokenTextView.setText(getString(R.string.id_token_fmt, idToken));
+                mAuthCodeTextView.setText(getString(R.string.auth_code_fmt, authCode));
                 updateUI(true);
 
-                // TODO(user): send token to server and validate server-side
+                // TODO(user): send code to server and exchange for access/refresh/ID tokens.
+                // [END get_auth_code]
             } else {
                 // Show signed-out UI.
                 updateUI(false);
             }
-            // [END get_id_token]
         }
     }
 
@@ -136,7 +146,7 @@ public class IdTokenActivity extends AppCompatActivity implements
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             ((TextView) findViewById(R.id.status)).setText(R.string.signed_out);
-            mIdTokenTextView.setText(getString(R.string.id_token_fmt, "null"));
+            mAuthCodeTextView.setText(getString(R.string.auth_code_fmt, "null"));
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
@@ -162,7 +172,7 @@ public class IdTokenActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                getIdToken();
+                getAuthCode();
                 break;
             case R.id.sign_out_button:
                 signOut();

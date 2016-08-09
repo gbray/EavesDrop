@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.signin;
+package com.google.samples.quickstart.signin.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.samples.quickstart.signin.R;
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. The code here is
